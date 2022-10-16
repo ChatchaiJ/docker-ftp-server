@@ -2,7 +2,9 @@ FROM alpine:3.16.2
 ENV FTP_USER=foo \
 	FTP_PASS=bar \
 	GID=1000 \
-	UID=1000
+	UID=1000 \
+	CREATE_FTP_USER=false \
+	CHOWN_FTP_USER_HOME=false
 
 RUN apk add --no-cache --update \
 	vsftpd==3.0.5-r1

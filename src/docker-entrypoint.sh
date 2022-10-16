@@ -1,21 +1,15 @@
 #!/bin/sh
 
-addgroup \
-	-g $GID \
-	-S \
-	$FTP_USER
+if [ "$CREATE_FTP_USER" = "true" ]; then
+	addgroup -g $GID -S $FTP_USER
+	adduser -D -G $FTP_USER -h /home/$FTP_USER -s /bin/false -u $UID $FTP_USER
 
-adduser \
-	-D \
-	-G $FTP_USER \
-	-h /home/$FTP_USER \
-	-s /bin/false \
-	-u $UID \
-	$FTP_USER
-
-mkdir -p /home/$FTP_USER
-chown -R $FTP_USER:$FTP_USER /home/$FTP_USER
-echo "$FTP_USER:$FTP_PASS" | /usr/sbin/chpasswd
+	echo "$FTP_USER:$FTP_PASS" | /usr/sbin/chpasswd
+	mkdir -p /home/$FTP_USER
+	if [ "$CHOWN_FTP_USER_HOME" = "true" ]; then
+		chown -R $FTP_USER:$FTP_USER /home/$FTP_USER
+	fi
+fi
 
 touch /var/log/vsftpd.log
 tail -f /var/log/vsftpd.log | tee /dev/stdout &

@@ -1,6 +1,6 @@
 #!/bin/sh
 set -xe
-export IMAGE_NAME=garethflowers/ftp-server
+export IMAGE_NAME=chatchaij/ftp-server
 
 docker build --tag $IMAGE_NAME .
 docker run --rm $IMAGE_NAME sh -c 'vsftpd -version 0>&1'
